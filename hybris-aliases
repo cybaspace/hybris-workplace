@@ -8,15 +8,15 @@ alias ylfg='y log | grep -i "$1"'                                               
 alias yls='y log | grep "Server startup in" | sed "s/.*|.*|.*|\(.*\)|.*\(Server startup in .*\)/\1- \2/"'  ## shows from actual hybris tomcat logging only the next coming server startup message
 
 # hybris directories
-alias ydp='builtin cd `y dir platform`'   ## cd to hybris platform dir
-alias ydy='builtin cd `y dir hybris`'     ## cd to hybris root dir
-alias ydr='builtin cd `y dir project`'    ## cd to project root dir
-alias ydt='builtin cd `y dir tomcat`'     ## cd to platform tomcat dir
-alias ydd='builtin cd `y dir data`'       ## cd to hybris data dir
-alias ydl='builtin cd `y dir log`'        ## cd to hybris log dir
-alias ydc='builtin cd `y dir config`'     ## cd to hybris config dir
-alias ydb='builtin cd `y dir bin`'        ## cd to hybris bin dir
-#alias yde='_yde $1'                       ## cd to hybris extension specified by given parameter
+alias ydp='_ycd platform'   ## cd to hybris platform dir
+alias ydy='_ycd hybris'     ## cd to hybris root dir
+alias ydr='_ycd project'    ## cd to project root dir
+alias ydt='_ycd tomcat`'    ## cd to platform tomcat dir
+alias ydd='_ycd data`'      ## cd to hybris data dir
+alias ydl='_ycd log`'       ## cd to hybris log dir
+alias ydc='_ycd config`'    ## cd to hybris config dir
+alias ydb='_ycd bin`'       ## cd to hybris bin dir
+alias yde='_yde $1'         ## cd to hybris extension specified by given parameter
 
 # hybris unit tests
 alias yup='y unittests package $1'         ## hybris unit tests with name of package to test (yup com.maihiro.* <=> ant unittests -Dtestclasses.packages=<e.g. com.maihiro.*>
@@ -34,6 +34,15 @@ alias ysp='y server stop'                  ## stop  hybris server (same as: hybr
 alias ysr='y server stop; y server start'  ## restart hybris server (stop and start / no console logging / no debug mode)
 alias ysd='y server debug'                 ## start hybris server in debug mode
 alias ysc='y server console'               ## start hybris server with logging to console
+
+function _ycd() {
+  dir=$(y dir $1)
+  if [[ -d "$dir" ]]; then
+    cd "$dir"
+  else
+    echo "$dir"
+  fi
+}
 
 # used to cd to a named extension
 function _yde() {

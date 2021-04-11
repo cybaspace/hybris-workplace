@@ -38,26 +38,26 @@ add_to_file() {
       if [[ $? != 0 ]]; then
         if [[ $header_added == 'false' ]]; then
           echo "" >> "$file"
-          echo "# added by maihiro workplace setup $actual_date" >> "$file"
+          echo "# added by hybris workplace setup $actual_date" >> "$file"
           header_added='true'
         fi
         echo "$line_to_add" >> "$file"
       fi
     done
     if [[ $header_added == 'true' ]]; then
-      echo "# ---- end add by maihiro workplace setup" >> "$file"
+      echo "# ---- end add by hybris workplace setup" >> "$file"
     fi
   fi
 }
 
 declare -a lines_to_add
-lines_to_add+=('source++$WORKPLACE_DIR/hybris-aliases')
+lines_to_add+=('source++'$WORKPLACE_DIR'/hybris-aliases')
 
 actual_path=$(echo $PATH)
 if [[ $actual_path =~ "$WORKPLACE_DIR/bin" ]]; then
   : # user bin directory already contained in path
 else
-  lines_to_add+=('export++PATH="$PATH:$WORKPLACE_DIR/bin"')
+  lines_to_add+=('export++PATH="$PATH:'$WORKPLACE_DIR'/bin"')
 fi
 add_to_file "$HOME/.zshrc"
 if [[ -e "$HOME/.bashrc" ]]; then
