@@ -1,0 +1,73 @@
+#!/bin/bash
+
+WORKPLACE_DIR="$HOME/.hybris-workplace"
+WORKPLACE_GIT="https://github.com/cybaspace/hybris-workplace.git"
+
+echo ""
+echo "Setup hybris workplace tools"
+echo ""
+
+if [[ -e $WORKPLACE_DIR ]]; then
+  echo "Workplace already installed!"
+  echo ""
+  echo "to reinstall remove directory $WORKPLACE_DIR"
+  echo "and restart setup"
+  echo ""
+  exit 1
+fi
+
+mkdir "$WORKPLACE_DIR"
+cd "$WORKPLACE_DIR"
+
+git clone $WORKPLACE_GIT .
+
+add_to_file() {
+  file=$1
+  actual_date=`date "+%d.%m.%Y %H:%M"`
+
+  if [[ -e "$file" ]]; then
+    header_added='false'
+    for line in ${lines_to_add[@]}; do
+      line_to_add=`echo $line | sed 's/++/ /g'`
+      prop_key=`echo "$line_to_add" | sed 's/=.*/=/'`
+      if [[ $prop_key == 'export PATH=' ]]; then
+        # this must always be installed
+        prop_key='line that will never ever be found in the rc-files!!!'
+      fi
+      grep "$prop_key" "$file" >/dev/null
+      if [[ $? != 0 ]]; then
+        if [[ $header_added == 'false' ]]; then
+          echo "" >> "$file"
+          echo "# added by maihiro workplace setup $actual_date" >> "$file"
+          header_added='true'
+        fi
+        echo "$line_to_add" >> "$file"
+      fi
+    done
+    if [[ $header_added == 'true' ]]; then
+      echo "# ---- end add by maihiro workplace setup" >> "$file"
+    fi
+  fi
+}
+
+declare -a lines_to_add
+lines_to_add+=('source++$WORKPLACE_DIR/hybris-aliases')
+
+actual_path=$(echo $PATH)
+if [[ $actual_path =~ "$WORKPLACE_DIR/bin" ]]; then
+  : # user bin directory already contained in path
+else
+  lines_to_add+=('export++PATH="$PATH:$WORKPLACE_DIR/bin"')
+fi
+add_to_file "$HOME/.zshrc"
+if [[ -e "$HOME/.bashrc" ]]; then
+  add_to_file "$HOME/.bashrc"
+else
+  add_to_file "$HOME/.bash_profile"
+fi
+
+echo "done"
+echo ""
+echo "The aliases will take effect on a new console session"
+echo "To use them now, please close this console window and start a new one"
+echo ""

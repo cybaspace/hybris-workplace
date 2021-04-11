@@ -1,0 +1,213 @@
+#!/usr/bin/env bash
+
+goto_dir_without() {
+  dir=`pwd | sed "s|$1.*||"`
+  cd "$dir"
+}
+
+cd_platform() {
+  cd "$hybris_platform"
+}
+
+setant() {
+  pushd "$hybris_platform" > /dev/null
+  . ./setantenv.sh
+  popd > /dev/null
+}
+
+assert_hybris_dir() {
+  cd hybris/bin/platform > /dev/null 2>&1
+  if [[ $? == 0 ]]; then
+    project_root="$actual_dir"
+  else
+    if [[ "$actual_dir" =~ '/hybris' ]]; then
+      goto_dir_without '/hybris'
+      project_root=`pwd`
+      cd hybris/bin/platform > /dev/null 2>&1
+      if [[ $? != 0 ]]; then
+        echo "Not inside a hybris project"
+        exit 1
+      fi
+    else
+      echo "Not inside a hybris project"
+      exit 1
+    fi
+  fi
+  cd "$actual_dir"
+}
+
+dir_list() {
+  echo "project hybris bin platform config data log tomcat-log tomcat tomcat-config"
+}
+
+echo_dir() {
+  case "$1" in
+    project)
+      echo "$project_root"
+      ;;
+    hybris)
+      echo "$hybris_dir"
+      ;;
+    platform)
+      echo "$hybris_platform"
+      ;;
+    log)
+      echo "$hybris_dir/log"
+      ;;
+    tomcat-log)
+      echo "$hybris_dir/log/tomcat"
+      ;;
+    config)
+      echo "$hybris_dir/config"
+      ;;
+    bin)
+      echo "$hybris_dir/bin"
+      ;;
+    data)
+      echo "$hybris_dir/data"
+      ;;
+    tomcat)
+      echo "$hybris_platform/tomcat"
+      ;;
+    tomcat-config)
+      echo "$hybris_platform/tomcat/conf"
+      ;;
+    extension)
+      cd "$hybris_dir/bin"
+      ext_path=`find . -name extensioninfo.xml |grep "/$2/extensioninfo.xml" | sed 's|/extensioninfo.xml||'`
+      if [[ -d "$ext_path" ]]; then
+        cd "$ext_path"
+        pwd
+      else
+        echo "No extension with name '$2' found"
+      fi
+  esac
+}
+
+extension_list() {
+  cd "$hybris_dir/bin"
+  echo "Searching!"
+  list=`find . -name extensioninfo.xml | sed 's|/extensioninfo.xml||' | sed 's|^.*/||'`
+  echo $list
+}
+
+unittests() {
+  if [[ -z $1 || -z $2 || ($1 != 'package' && $1 != 'extension') ]]; then
+    echo "you have to specify [package|extension] and [packagename|extensionname]"
+    exit 1
+  fi
+  setant
+  cd_platform
+  ant unittests -Dtestclasses.$1s=$2
+}
+
+run_ant() {
+  parameter="$@"
+  ext_name=${@:$#}
+
+  setant
+
+  ant_commands='clean build all server unittests initialize'
+  if [[ -n $ext_name ]]; then
+    if [[ "$ant_commands" =~ "$ext_name" ]]; then
+      :
+    else
+      if [[ $ext_name == 'platform' ]]; then
+        ext_path=`echo_dir platform`
+      else
+        ext_path=`echo_dir extension $ext_name`
+      fi
+      if [[ -d "$ext_path" ]]; then
+        cd "$ext_path"
+        parameter=${@:1:$#-1}
+      fi
+    fi
+  fi
+  if [[ -e extensioninfo.xml ]]; then
+    :
+  else
+    cd_platform
+  fi
+  ant $parameter
+}
+
+server() {
+  cd_platform
+  case "$1" in
+    start)
+      ./hybrisserver.sh start
+      ;;
+    stop)
+      ./hybrisserver.sh stop
+      ;;
+    restart)
+      ./hybrisserver.sh stop
+      ./hybrisserver.sh start
+      ;;
+    debug)
+      ./hybrisserver.sh debug
+      ;;
+    console)
+      ./hybrisserver.sh
+      ;;
+    *)
+      help "you have to specify a server command: start, stop, restart, debug or console"
+      ;;
+  esac
+}
+
+help() {
+  if [[ -z $1 ]]; then
+    echo "commands are: dir, ant, log, server, unittests"
+    echo "  but y is most likely used by aliases - please try 'apropos hybris' to get help about defined hybris aliases"
+  else
+    echo "$1"
+  fi
+  echo ""
+  exit
+}
+
+if [[ -z $1 ]]; then
+  help
+fi
+
+actual_dir=`pwd`
+project_root=''
+assert_hybris_dir
+hybris_dir="$project_root/hybris"
+hybris_platform="$project_root/hybris/bin/platform"
+
+command=$1
+shift
+
+case $command in
+  dir)
+    echo_dir $@
+    ;;
+  dirlist)
+    dir_list
+    ;;
+  extensionlist)
+    extension_list
+    ;;
+  unittests)
+    unittests $@
+    ;;
+  ant)
+    run_ant $@
+    ;;
+  log)
+    actual_date=`date "+%Y%m%d"`
+    log_file="$hybris_dir/log/tomcat/console-$actual_date.log"
+    if [[ -n $1 ]]; then
+      lines="n $1"
+    fi
+    tail -f$lines "$log_file"
+    ;;
+  server)
+    server $@
+    ;;
+  *)
+    help
+    ;;
+esac

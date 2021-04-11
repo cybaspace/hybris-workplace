@@ -1,0 +1,52 @@
+# To use the aliases from this file the 'bin/y' file must be in $PATH
+
+# hybris logging
+alias ylf='y log'                                                                                          ## shows the hybris tomcat console logging with 'tail -f'
+alias yln='y log $1'                                                                                       ## shows the hybris tomcat console logging with 'tail -f' and the given number of past lines
+alias ylg='log_path=`y dir tomcat-log`;grep -i "$1" $log_path/console-$(date +%Y%m%d).log'                 ## greps the given pattern from actual hybris tomcat console
+alias ylfg='y log | grep -i "$1"'                                                                          ## greps the given pattern from upcoming logging of actual hybris tomcat console
+alias yls='y log | grep "Server startup in" | sed "s/.*|.*|.*|\(.*\)|.*\(Server startup in .*\)/\1- \2/"'  ## shows from actual hybris tomcat logging only the next coming server startup message
+
+# hybris directories
+alias ydp='builtin cd `y dir platform`'   ## cd to hybris platform dir
+alias ydy='builtin cd `y dir hybris`'     ## cd to hybris root dir
+alias ydr='builtin cd `y dir project`'    ## cd to project root dir
+alias ydt='builtin cd `y dir tomcat`'     ## cd to platform tomcat dir
+alias ydd='builtin cd `y dir data`'       ## cd to hybris data dir
+alias ydl='builtin cd `y dir log`'        ## cd to hybris log dir
+alias ydc='builtin cd `y dir config`'     ## cd to hybris config dir
+alias ydb='builtin cd `y dir bin`'        ## cd to hybris bin dir
+#alias yde='_yde $1'                       ## cd to hybris extension specified by given parameter
+
+# hybris unit tests
+alias yup='y unittests package $1'         ## hybris unit tests with name of package to test (yup com.maihiro.* <=> ant unittests -Dtestclasses.packages=<e.g. com.maihiro.*>
+alias yue='y unittests extension $1'       ## hybris unit tests with name of extension to test (yue metest <=> ant unittests -Dtestclasses.extensions=<e.g. metest>
+
+# hybris ant operations
+alias ya='y ant'                           ## hybris ant with ant command(s) (ant <e.g. clean all>
+alias yab='y ant build'                    ## hybris ant build
+alias yacb='y ant clean build'             ## hybris ant clean build
+alias yaca='y ant clean all'               ## hybris ant clean all
+
+# hybris server
+alias yss='y server start'                 ## start hybris server (same as: hybris/bin/platform/hybrisserver.sh start)
+alias ysp='y server stop'                  ## stop  hybris server (same as: hybris/bin/platform/hybrisserver.sh stop)
+alias ysr='y server stop; y server start'  ## restart hybris server (stop and start / no console logging / no debug mode)
+alias ysd='y server debug'                 ## start hybris server in debug mode
+alias ysc='y server console'               ## start hybris server with logging to console
+
+# used to cd to a named extension
+function _yde() {
+  if [[ -z $1 ]]; then
+    echo "Specify the name of the extension to change directory"
+    return
+  fi
+  ext_name=$1
+  # find directory of the extension named by first parameter
+  ext_path=`y dir extension $ext_name`
+  if [[ -d "$ext_path" ]]; then
+    builtin cd "$ext_path"
+  else
+    echo "No extension with name '$ext_name' found"
+  fi
+}
