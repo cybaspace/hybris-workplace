@@ -11,11 +11,11 @@ alias yls='y log | grep "Server startup in" | sed "s/.*|.*|.*|\(.*\)|.*\(Server 
 alias ydp='_ycd platform'   ## cd to hybris platform dir
 alias ydy='_ycd hybris'     ## cd to hybris root dir
 alias ydr='_ycd project'    ## cd to project root dir
-alias ydt='_ycd tomcat`'    ## cd to platform tomcat dir
-alias ydd='_ycd data`'      ## cd to hybris data dir
-alias ydl='_ycd log`'       ## cd to hybris log dir
-alias ydc='_ycd config`'    ## cd to hybris config dir
-alias ydb='_ycd bin`'       ## cd to hybris bin dir
+alias ydt='_ycd tomcat'     ## cd to platform tomcat dir
+alias ydd='_ycd data'       ## cd to hybris data dir
+alias ydl='_ycd log'        ## cd to hybris log dir
+alias ydc='_ycd config'     ## cd to hybris config dir
+alias ydb='_ycd bin'        ## cd to hybris bin dir
 alias yde='_yde $1'         ## cd to hybris extension specified by given parameter
 
 # hybris unit tests
@@ -38,7 +38,7 @@ alias ysc='y server console'               ## start hybris server with logging t
 function _ycd() {
   dir=$(y dir $1)
   if [[ -d "$dir" ]]; then
-    cd "$dir"
+    builtin cd "$dir"
   else
     echo "$dir"
   fi
