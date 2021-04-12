@@ -74,7 +74,7 @@ echo_dir() {
       ;;
     extension)
       cd "$hybris_dir/bin"
-      ext_path=`find . -name extensioninfo.xml |grep "/$2/extensioninfo.xml" | sed 's|/extensioninfo.xml||'`
+      ext_path=`find -L . -name extensioninfo.xml |grep "/$2/extensioninfo.xml" | sed 's|/extensioninfo.xml||'`
       if [[ -d "$ext_path" ]]; then
         cd "$ext_path"
         pwd
