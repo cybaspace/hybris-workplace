@@ -57,9 +57,12 @@ actual_path=$(echo $PATH)
 if [[ $actual_path =~ "$WORKPLACE_DIR/bin" ]]; then
   : # user bin directory already contained in path
 else
-  lines_to_add+=('export++PATH="$PATH:'$WORKPLACE_DIR'/bin"')
+  lines_to_add+=("export++PATH=\$PATH:$WORKPLACE_DIR/bin")
 fi
-add_to_file "$HOME/.zshrc"
+
+if [[ -e "$HOME/.zshrc" ]]; then
+  add_to_file "$HOME/.zshrc"
+fi
 if [[ -e "$HOME/.bashrc" ]]; then
   add_to_file "$HOME/.bashrc"
 else
