@@ -35,6 +35,17 @@ alias ysr='y server stop; y server start'  ## restart hybris server (stop and st
 alias ysd='y server debug'                 ## start hybris server in debug mode
 alias ysc='y server console'               ## start hybris server with logging to console
 
+# Display help about the aliases
+alias yhelp='_yhelp $1'                    ## show help about defined aliases
+
+function _yhelp() {
+  searchterm='.'
+  if [[ -n $1 ]]; then
+    searchterm="$1"
+  fi
+  grep -i '^alias ' ~/.hybris-workplace/hybris-aliases | grep '## ' | sed 's/alias //' | sed 's/=.*## /\t: /' | grep -i "$searchterm"
+}
+
 function _ycd() {
   dir=$(y dir $1)
   if [[ -d "$dir" ]]; then

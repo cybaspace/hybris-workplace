@@ -6,6 +6,19 @@ To start the setup process just call the following command on console
 curl -s https://raw.githubusercontent.com/cybaspace/hybris-workplace/main/setup |bash
 ```
 
+## Getting help
+To show the defined aliases use `yhelp`.
+Without a parameter it will show all defined aliases.
+You can use a searchterm to list alias belonging to this, e.g. `yhelp ant` shows all ant aliases:
+```
+❯ yhelp ant
+yup	: hybris unit tests with name of package to test (yup com.maihiro.* <=> ant unittests -Dtestclasses.packages=<e.g. com.maihiro.*>
+yue	: hybris unit tests with name of extension to test (yue metest <=> ant unittests -Dtestclasses.extensions=<e.g. metest>
+ya	: hybris ant with ant command(s) (ant <e.g. clean all>
+yab	: hybris ant build
+yacb	: hybris ant clean build
+yaca	: hybris ant clean all
+```
 ## Hybris shortcuts
 The interesting part about the hybris shortcuts is you can call them anywhere in your hybris project, doesn't matter if your are in platform directory or extension or anywhere else.
 
