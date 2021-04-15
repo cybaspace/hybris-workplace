@@ -1,5 +1,11 @@
 # To use the aliases from this file the 'bin/y' file must be in $PATH
 
+# Display help about the aliases
+alias yhelp='_yhelp $1'                    ## show help about defined aliases
+
+# Update the installation
+alias yupdate='cd $HOME/.hybris-workplace; git pull; if [[ $? == 0 ]]; then; echo "Updated hybris workplace, changes will take effect in new console session"; fi'  ## updates the actual hybris workplace installation
+
 # hybris logging
 alias ylf='y log'                                                                                          ## shows the hybris tomcat console logging with 'tail -f'
 alias yln='y log $1'                                                                                       ## shows the hybris tomcat console logging with 'tail -f' and the given number of past lines
@@ -34,9 +40,6 @@ alias ysp='y server stop'                  ## stop  hybris server (same as: hybr
 alias ysr='y server stop; y server start'  ## restart hybris server (stop and start / no console logging / no debug mode)
 alias ysd='y server debug'                 ## start hybris server in debug mode
 alias ysc='y server console'               ## start hybris server with logging to console
-
-# Display help about the aliases
-alias yhelp='_yhelp $1'                    ## show help about defined aliases
 
 function _yhelp() {
   searchterm='.'

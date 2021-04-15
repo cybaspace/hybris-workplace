@@ -10,8 +10,7 @@ echo ""
 if [[ -e $WORKPLACE_DIR ]]; then
   echo "Workplace already installed!"
   echo ""
-  echo "to reinstall remove directory $WORKPLACE_DIR"
-  echo "and restart setup"
+  echo "Use yupdate instead"
   echo ""
   exit 1
 fi
