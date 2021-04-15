@@ -11,7 +11,6 @@ alias ylf='y log'                                                               
 alias yln='y log $1'                                                                                       ## shows the hybris tomcat console logging with 'tail -f' and the given number of past lines
 alias ylg='log_path=`y dir tomcat-log`;grep -i "$1" $log_path/console-$(date +%Y%m%d).log'                 ## greps the given pattern from actual hybris tomcat console
 alias ylfg='y log | grep -i "$1"'                                                                          ## greps the given pattern from upcoming logging of actual hybris tomcat console
-alias yls='y log | grep "Server startup in" | sed "s/.*|.*|.*|\(.*\)|.*\(Server startup in .*\)/\1- \2/"'  ## shows from actual hybris tomcat logging only the next coming server startup message
 
 # hybris directories
 alias ydp='_ycd platform'   ## cd to hybris platform dir
@@ -40,6 +39,8 @@ alias ysp='y server stop'                  ## stop  hybris server (same as: hybr
 alias ysr='y server stop; y server start'  ## restart hybris server (stop and start / no console logging / no debug mode)
 alias ysd='y server debug'                 ## start hybris server in debug mode
 alias ysc='y server console'               ## start hybris server with logging to console
+alias yst='curl -m 1 -ksSf https://localhost:9002/hac >/dev/null 2>&1; if [[ $? != 0 ]]; then; echo "Hybris server is up and running"; else; echo "Hybris server is not running"; fi  ## test if the hybris server (HAC) is running
+alias ystf='curl -m 1 -ksSf https://localhost:9002/hac >/dev/null 2>&1; while [[ $? != 0 ]]; do; curl -m 1 -ksSf https://localhost:9002/hac >/dev/null 2>&1; done; date'+%H:%M:%S'"Hybris server is up and running"'  ## test if the hybris server (HAC) is running, if not waits until it has been started - then prints a message
 
 function _yhelp() {
   searchterm='.'
