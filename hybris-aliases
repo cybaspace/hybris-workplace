@@ -39,8 +39,8 @@ alias ysp='y server stop'                  ## stop  hybris server (same as: hybr
 alias ysr='y server stop; y server start'  ## restart hybris server (stop and start / no console logging / no debug mode)
 alias ysd='y server debug'                 ## start hybris server in debug mode
 alias ysc='y server console'               ## start hybris server with logging to console
-alias yst='curl -m 1 -ksSf https://localhost:9002/hac >/dev/null 2>&1; if [[ $? != 0 ]]; then; echo "Hybris server is up and running"; else; echo "Hybris server is not running"; fi'  ## test if the hybris server (HAC) is running
-alias ystf='curl -m 1 -ksSf https://localhost:9002/hac >/dev/null 2>&1; while [[ $? != 0 ]]; do; curl -m 1 -ksSf https://localhost:9002/hac >/dev/null 2>&1; done; date "+%H:%M:%S""Hybris server is up and running"'  ## test if the hybris server (HAC) is running, if not waits until it has been started - then prints a message
+alias yst='curl -m 1 -ksSf https://localhost:9002/hac >/dev/null 2>&1; if [[ $? == 0 ]]; then; echo "Hybris server is up and running"; else; echo "Hybris server is not running"; fi'  ## test if the hybris server (HAC) is running
+alias ystf='curl -m 1 -ksSf https://localhost:9002/hac >/dev/null 2>&1; while [[ $? != 0 ]]; do; curl -m 1 -ksSf https://localhost:9002/hac >/dev/null 2>&1; done; date "+%H:%M:%S"" Hybris server is up and running"'  ## test if the hybris server (HAC) is running, if not waits until it has been started - then prints a message
 
 function _yhelp() {
   searchterm='.'
