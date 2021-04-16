@@ -24,8 +24,8 @@ alias ydb='_ycd bin'        ## cd to hybris bin dir
 alias yde='_yde $1'         ## cd to hybris extension specified by given parameter
 
 # hybris unit tests
-alias yup='y unittests package $1'         ## hybris unit tests with name of package to test (yup com.maihiro.* <=> ant unittests -Dtestclasses.packages=<e.g. com.maihiro.*>
-alias yue='y unittests extension $1'       ## hybris unit tests with name of extension to test (yue metest <=> ant unittests -Dtestclasses.extensions=<e.g. metest>
+alias yup='y unittests package $1'         ## hybris unit tests with name of package to test (yup com.hybris.* <=> ant unittests -Dtestclasses.packages=<e.g. com.hybris.*>
+alias yue='y unittests extension $1'       ## hybris unit tests with name of extension to test (yue mycore <=> ant unittests -Dtestclasses.extensions=<e.g. mycore>
 
 # hybris ant operations
 alias ya='y ant'                           ## hybris ant with ant command(s) (ant <e.g. clean all>

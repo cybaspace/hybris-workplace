@@ -12,8 +12,8 @@ Without a parameter it will show all defined aliases.
 You can use a searchterm to list alias belonging to this, e.g. `yhelp ant` shows all ant aliases:
 ```
 ❯ yhelp ant
-yup	: hybris unit tests with name of package to test (yup com.maihiro.* <=> ant unittests -Dtestclasses.packages=<e.g. com.maihiro.*>
-yue	: hybris unit tests with name of extension to test (yue metest <=> ant unittests -Dtestclasses.extensions=<e.g. metest>
+yup	: hybris unit tests with name of package to test (yup com.hybris.* <=> ant unittests -Dtestclasses.packages=<e.g. com.hybris.*>
+yue	: hybris unit tests with name of extension to test (yue mycore <=> ant unittests -Dtestclasses.extensions=<e.g. mycore>
 ya	: hybris ant with ant command(s) (ant <e.g. clean all>
 yab	: hybris ant build
 yacb	: hybris ant clean build
@@ -59,7 +59,7 @@ This will first change to platform directory, call `setantenv.sh`, go back to ex
   cd to hybris bin dir
 * `yde`  
   cd to the extension dir specified by parameter  
-  e.g. `yde myinitialdata`  
+  e.g. `yde mycore`  
   **It can take some seconds to find the correct directory!**
 
 
@@ -73,7 +73,7 @@ This will first change to platform directory, call `setantenv.sh`, go back to ex
 The hybris ant operations have 3 different contextes:
 1. if you are in an extensions root directory (where the `extensioninfo.xml` resides) ant operates on this extension!
 1. Last parameter in the call is the name of an extension or platform, then it will change to the extension or platform directory first.  
-   e.g. `yacb mecore` or `ya clean mycore` or `yab platform`  
+   e.g. `yacb mycore` or `ya clean mycore` or `yab platform`  
    `platform` is useful if you are in an extension directory, because normally it will operate only on the extension, not on the whole hybris system
 1. in every other case it will operate on the project (goto hybris platform dir first)
 * `ya`  
