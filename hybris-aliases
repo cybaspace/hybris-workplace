@@ -33,7 +33,7 @@ alias yab='y ant build'                    ## hybris ant build
 alias yacb='y ant clean build'             ## hybris ant clean build
 alias yaca='y ant clean all'               ## hybris ant clean all
 alias yai='y ant initialize'               ## hybris ant initialize
-alias yaif='y ant initialize | tee init.log  ## hybris ant intialize and write to init.log
+alias yaif='y ant initialize | tee init.log'  ## hybris ant intialize and write to init.log
 
 # hybris server
 alias yss='y server start'                 ## start hybris server (same as: hybris/bin/platform/hybrisserver.sh start)
