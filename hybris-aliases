@@ -49,7 +49,7 @@ function _yhelp() {
   if [[ -n $1 ]]; then
     searchterm="$1"
   fi
-  grep -i '^alias ' ~/.hybris-workplace/hybris-aliases | grep '## ' | sed 's/alias //' | sed 's/=.*## /\t: /' | grep -i "$searchterm"
+  grep -i '^alias ' ~/.hybris-workplace/hybris-aliases | grep '## ' | sed 's/alias //' | sed "s/=.*## /\t: /" | grep -i "$searchterm"
 }
 
 function _ycd() {
